@@ -22,7 +22,7 @@ mongo = PyMongo(app)
 @app.route("/")
 @app.route("/get_tasks")
 def get_tasks():
-    tasks = mongo.db.tasks.find()
+    tasks = list(mongo.db.tasks.find())
     return render_template('tasks.html', tasks=tasks)
 
 
@@ -56,7 +56,7 @@ def login():
         # check if username exists in db
         existing_user = mongo.db.users.find_one(
             {"username": request.form.get('username').lower()})
-            
+
         if existing_user:
             # ensure hashed password matches user input
             if check_password_hash(
